@@ -1,1 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallpaper Catalog</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <span>🖼️</span>
+                <h1>Wallpaper<span>Catalog</span></h1>
+            </div>
+            <p class="subtitle">Найди идеальные обои для своей системы</p>
+        </header>
 
+        <!-- Main Content -->
+        <main>
+            <!-- Filters -->
+            <div class="filters">
+                <!-- OS Selection -->
+                <div class="filter-group">
+                    <label>💻 Операционная система</label>
+                    <div class="os-selector">
+                        <button class="os-btn" data-os="windows">
+                            <svg viewBox="0 0 24 24" width="20" height="20">
+                                <path fill="currentColor" d="M3 5.5L11 4.3V11.5H3V5.5ZM3 18.5L11 19.7V12.5H3V18.5ZM13 4.3L21 5.5V11.5H13V4.3ZM21 18.5L13 19.7V12.5H21V18.5Z"/>
+                            </svg>
+                            Windows
+                        </button>
+                        <button class="os-btn" data-os="linux">
+                            <svg viewBox="0 0 24 24" width="20" height="20">
+                                <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                            </svg>
+                            Linux
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Colors -->
+                <div class="filter-group">
+                    <label>🎨 Цветовая гамма</label>
+                    <div class="color-inputs">
+                        <div class="color-field">
+                            <span>Цвет 1</span>
+                            <input type="color" id="color1" value="#000000">
+                        </div>
+                        <div class="color-field">
+                            <span>Цвет 2</span>
+                            <input type="color" id="color2" value="#ffffff">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Presets -->
+                <div class="filter-group">
+                    <label>⚡ Быстрые пресеты</label>
+                    <div class="presets">
+                        <button class="preset-btn" data-c1="#000000" data-c2="#ffffff">⚫ Белый/Чёрный</button>
+                        <button class="preset-btn" data-c1="#0000ff" data-c2="#00ff00">🔵 Синий/Зелёный</button>
+                        <button class="preset-btn" data-c1="#ff0000" data-c2="#ffff00">🔴 Красный/Жёлтый</button>
+                        <button class="preset-btn" data-c1="#ff6b6b" data-c2="#ffa94d">🔥 Огненный</button>
+                        <button class="preset-btn" data-c1="#4ecdc4" data-c2="#45b7d1">🌊 Морской</button>
+                        <button class="preset-btn" data-c1="#a8e6cf" data-c2="#88d8b0">🌿 Лесной</button>
+                        <button class="preset-btn" data-c1="#ffd93d" data-c2="#ff6b6b">🌅 Закат</button>
+                        <button class="preset-btn" data-c1="#a29bfe" data-c2="#fd79a8">💜 Фиолетовый</button>
+                    </div>
+                </div>
+
+                <!-- Search -->
+                <div class="filter-group">
+                    <label>🔍 Поиск по названию</label>
+                    <input type="text" id="searchInput" placeholder="Например: черный белый..." class="search-input">
+                </div>
+
+                <button id="findBtn" class="find-btn">
+                    <span>🔎 Найти обои</span>
+                </button>
+            </div>
+
+            <!-- Results -->
+            <div id="results" class="results">
+                <div class="empty-state">
+                    <div class="empty-icon">🖼️</div>
+                    <h3>Выберите параметры и нажмите "Найти обои"</h3>
+                    <p>Я покажу все подходящие обои из моей коллекции</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>Все обои находятся в папке <code>wallpapers/</code></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
