@@ -1,401 +1,355 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+// Состояние
+let state = {
+    os: null,
+    color1: '#000000',
+    color2: '#ffffff',
+    search: ''
+};
 
-body {
-    font-family: 'Inter', -apple-system, sans-serif;
-    background: #0a0a1a;
-    min-height: 100vh;
-    color: #fff;
-    padding: 30px 20px;
-}
+// 📁 Здесь ты добавляешь все свои обои
+// Просто дописывай новые файлы в нужные массивы
+const wallpaperFiles = {
+    windows: [
+        // Чёрно-белые
+        'черный белый 1.png',
+        'черный белый 2.png',
+        'черный белый 3.png',
+        'черный белый 4.png',
+        'черный белый 5.png',
+        'черный серый 1.png',
+        'белый серый 1.png',
+        'белый черный 1.png',
+        'серый черный 1.png',
+        
+        // Сине-зелёные
+        'синий зеленый 1.png',
+        'синий зеленый 2.png',
+        'синий зеленый 3.png',
+        'синий бирюзовый 1.png',
+        'темно-синий зеленый 1.png',
+        'голубой зеленый 1.png',
+        
+        // Красно-жёлтые
+        'красный желтый 1.png',
+        'красный желтый 2.png',
+        'красный оранжевый 1.png',
+        'желтый оранжевый 1.png',
+        'алый золотой 1.png',
+        
+        // Фиолетово-розовые
+        'фиолетовый розовый 1.png',
+        'фиолетовый розовый 2.png',
+        'сиреневый розовый 1.png',
+        'пурпурный розовый 1.png',
+        
+        // Зелёно-синие
+        'зеленый синий 1.png',
+        'зеленый синий 2.png',
+        'изумрудный синий 1.png',
+        'мятный синий 1.png',
+        
+        // Оранжево-красные
+        'оранжевый красный 1.png',
+        'оранжевый красный 2.png',
+        'терракотовый красный 1.png',
+        
+        // Другие комбинации
+        'розовый голубой 1.png',
+        'голубой розовый 1.png',
+        'желтый зеленый 1.png',
+        'зеленый желтый 1.png',
+        'красный синий 1.png',
+        'синий красный 1.png',
+        'черный золотой 1.png',
+        'золотой черный 1.png',
+        'белый голубой 1.png',
+        'голубой белый 1.png',
+        'серый синий 1.png',
+        'синий серый 1.png',
+        
+        // Монохромные
+        'черный моно 1.png',
+        'белый моно 1.png',
+        'серый моно 1.png',
+        'темный моно 1.png',
+        'светлый моно 1.png'
+    ],
+    linux: [
+        // Чёрно-белые
+        'черный белый 1.png',
+        'черный белый 2.png',
+        'черный белый 3.png',
+        'белый серый 1.png',
+        'серый черный 1.png',
+        
+        // Сине-зелёные
+        'синий зеленый 1.png',
+        'синий зеленый 2.png',
+        'темно-синий зеленый 1.png',
+        'голубой зеленый 1.png',
+        
+        // Красно-жёлтые
+        'красный желтый 1.png',
+        'красный оранжевый 1.png',
+        'алый золотой 1.png',
+        
+        // Фиолетово-розовые
+        'фиолетовый розовый 1.png',
+        'фиолетовый розовый 2.png',
+        'сиреневый розовый 1.png',
+        
+        // Зелёно-синие
+        'зеленый синий 1.png',
+        'изумрудный синий 1.png',
+        'мятный синий 1.png',
+        
+        // Оранжево-красные
+        'оранжевый красный 1.png',
+        'терракотовый красный 1.png',
+        
+        // Другие
+        'розовый голубой 1.png',
+        'желтый зеленый 1.png',
+        'красный синий 1.png',
+        'черный золотой 1.png',
+        'белый голубой 1.png',
+        'серый синий 1.png'
+    ]
+};
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
+// 🎨 Цветовая карта (можно добавлять новые цвета)
+const colorMap = {
+    'черный': ['#000000', '#1a1a1a', '#2d2d2d', '#0a0a0a', '#111111'],
+    'белый': ['#ffffff', '#f0f0f0', '#e8e8e8', '#fafafa', '#f5f5f5'],
+    'серый': ['#9e9e9e', '#616161', '#424242', '#757575', '#bdbdbd', '#888888'],
+    'синий': ['#0000ff', '#1a237e', '#0d47a1', '#1976d2', '#1565c0', '#283593', '#303f9f'],
+    'голубой': ['#00bcd4', '#26c6da', '#4dd0e1', '#80deea', '#03a9f4', '#29b6f6'],
+    'зеленый': ['#00ff00', '#1b5e20', '#2e7d32', '#43a047', '#388e3c', '#2e7d32', '#4caf50'],
+    'бирюзовый': ['#00897b', '#26a69a', '#4db6ac', '#80cbc4', '#00695c'],
+    'изумрудный': ['#00c853', '#69f0ae', '#00e676', '#1de9b6'],
+    'мятный': ['#b2dfdb', '#80cbc4', '#a5d6a7', '#c8e6c9'],
+    'красный': ['#ff0000', '#b71c1c', '#c62828', '#e53935', '#d32f2f', '#f44336'],
+    'алый': ['#ff1744', '#d50000', '#ff5252', '#ff8a80'],
+    'желтый': ['#ffff00', '#f9a825', '#fdd835', '#ffeb3b', '#fbc02d'],
+    'золотой': ['#ffd700', '#ffc107', '#ffb300', '#ffa000', '#ff6f00'],
+    'оранжевый': ['#ff6f00', '#e65100', '#f57c00', '#fb8c00', '#ff9800'],
+    'терракотовый': ['#d84315', '#bf360c', '#e64a19', '#ff5722'],
+    'фиолетовый': ['#9c27b0', '#7b1fa2', '#6a1b9a', '#ab47bc', '#8e24aa'],
+    'розовый': ['#e91e63', '#ad1457', '#d81b60', '#ec407a', '#f06292'],
+    'сиреневый': ['#ce93d8', '#ba68c8', '#ab47bc', '#9c27b0'],
+    'пурпурный': ['#6a1b9a', '#4a148c', '#7b1fa2', '#9c27b0'],
+    'моно': ['#000000', '#ffffff', '#808080', '#333333', '#cccccc']
+};
 
-/* Header */
-header {
-    text-align: center;
-    margin-bottom: 50px;
-}
+// 👤 Имя автора (твоё имя!)
+const AUTHOR_NAME = 'Кирилл';
 
-.logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-}
+// DOM элементы
+const osBtns = document.querySelectorAll('.os-btn');
+const color1Input = document.getElementById('color1');
+const color2Input = document.getElementById('color2');
+const searchInput = document.getElementById('searchInput');
+const findBtn = document.getElementById('findBtn');
+const resultsDiv = document.getElementById('results');
+const presetBtns = document.querySelectorAll('.preset-btn');
 
-.logo span:first-child {
-    font-size: 2.5rem;
-}
+// События
+osBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        osBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.os = btn.dataset.os;
+        setTimeout(findWallpapers, 100);
+    });
+});
 
-.logo h1 {
-    font-size: 2.8rem;
-    font-weight: 900;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
+color1Input.addEventListener('input', (e) => {
+    state.color1 = e.target.value;
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(findWallpapers, 300);
+});
 
-.logo h1 span {
-    font-weight: 300;
-    background: none;
-    -webkit-text-fill-color: rgba(255, 255, 255, 0.3);
-}
+color2Input.addEventListener('input', (e) => {
+    state.color2 = e.target.value;
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(findWallpapers, 300);
+});
 
-.subtitle {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 1.1rem;
-    margin-top: 8px;
-}
+searchInput.addEventListener('input', (e) => {
+    state.search = e.target.value.toLowerCase();
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(findWallpapers, 300);
+});
 
-/* Filters */
-.filters {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(20px);
-    border-radius: 20px;
-    padding: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    margin-bottom: 40px;
-}
+presetBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const c1 = btn.dataset.c1;
+        const c2 = btn.dataset.c2;
+        color1Input.value = c1;
+        color2Input.value = c2;
+        state.color1 = c1;
+        state.color2 = c2;
+        setTimeout(findWallpapers, 100);
+    });
+});
 
-.filter-group {
-    margin-bottom: 25px;
-}
+findBtn.addEventListener('click', findWallpapers);
 
-.filter-group:last-of-type {
-    margin-bottom: 20px;
-}
-
-.filter-group label {
-    display: block;
-    font-weight: 600;
-    font-size: 0.95rem;
-    margin-bottom: 12px;
-    color: rgba(255, 255, 255, 0.8);
-}
-
-/* OS Selector */
-.os-selector {
-    display: flex;
-    gap: 12px;
-}
-
-.os-btn {
-    flex: 1;
-    padding: 14px 20px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 2px solid rgba(255, 255, 255, 0.08);
-    border-radius: 14px;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    font-family: inherit;
-}
-
-.os-btn:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.15);
-    transform: translateY(-2px);
-}
-
-.os-btn.active {
-    background: rgba(102, 126, 234, 0.15);
-    border-color: #667eea;
-    color: #fff;
-    box-shadow: 0 0 30px rgba(102, 126, 234, 0.1);
-}
-
-/* Color Inputs */
-.color-inputs {
-    display: flex;
-    gap: 30px;
-    align-items: center;
-}
-
-.color-field {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.color-field span {
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.5);
-    font-weight: 500;
-}
-
-.color-field input[type="color"] {
-    width: 50px;
-    height: 50px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    background: none;
-    padding: 0;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-}
-
-.color-field input[type="color"]::-webkit-color-swatch-wrapper {
-    padding: 0;
-}
-
-.color-field input[type="color"]::-webkit-color-swatch {
-    border: none;
-    border-radius: 10px;
-}
-
-.color-field input[type="color"]:hover {
-    transform: scale(1.05);
-    border-color: #667eea;
-}
-
-/* Presets */
-.presets {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.preset-btn {
-    padding: 8px 16px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 50px;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.85rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: inherit;
-}
-
-.preset-btn:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.15);
-    color: #fff;
-    transform: translateY(-2px);
-}
-
-/* Search */
-.search-input {
-    width: 100%;
-    padding: 14px 20px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 2px solid rgba(255, 255, 255, 0.06);
-    border-radius: 14px;
-    color: #fff;
-    font-size: 1rem;
-    font-family: inherit;
-    transition: all 0.3s ease;
-}
-
-.search-input::placeholder {
-    color: rgba(255, 255, 255, 0.3);
-}
-
-.search-input:focus {
-    outline: none;
-    border-color: #667eea;
-    background: rgba(255, 255, 255, 0.08);
-}
-
-/* Find Button */
-.find-btn {
-    width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border: none;
-    border-radius: 14px;
-    color: #fff;
-    font-size: 1.1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: inherit;
-    letter-spacing: 0.5px;
-}
-
-.find-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
-}
-
-.find-btn:active {
-    transform: translateY(0);
-}
-
-.find-btn span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-/* Results */
-.results {
-    min-height: 300px;
-}
-
-.empty-state {
-    text-align: center;
-    padding: 80px 20px;
-}
-
-.empty-icon {
-    font-size: 4rem;
-    margin-bottom: 20px;
-    opacity: 0.3;
-}
-
-.empty-state h3 {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 8px;
-}
-
-.empty-state p {
-    color: rgba(255, 255, 255, 0.3);
-}
-
-/* Wallpaper Grid */
-.wallpaper-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 24px;
-}
-
-.wallpaper-card {
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 16px;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    transition: all 0.4s ease;
-    animation: slideUp 0.5s ease;
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
+// Основная функция поиска
+function findWallpapers() {
+    if (!state.os) {
+        showEmpty('⚠️', 'Выберите операционную систему', 'Нажмите на Windows или Linux');
+        return;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+
+    const files = wallpaperFiles[state.os] || [];
+    
+    if (files.length === 0) {
+        showEmpty('📂', 'Нет обоев для этой системы', 'Добавьте файлы в папку wallpapers/');
+        return;
+    }
+
+    const color1Name = getColorName(state.color1);
+    const color2Name = getColorName(state.color2);
+    
+    let filtered = files.filter(file => {
+        const fileName = file.toLowerCase();
+        
+        const hasColor1 = color1Name ? fileName.includes(color1Name.toLowerCase()) : true;
+        const hasColor2 = color2Name ? fileName.includes(color2Name.toLowerCase()) : true;
+        
+        if (color1Name && color2Name) {
+            return hasColor1 && hasColor2;
+        }
+        if (color1Name) {
+            return hasColor1;
+        }
+        if (color2Name) {
+            return hasColor2;
+        }
+        return true;
+    });
+
+    if (state.search) {
+        filtered = filtered.filter(file => 
+            file.toLowerCase().includes(state.search)
+        );
+    }
+
+    if (filtered.length === 0) {
+        showEmpty('🔍', 'Ничего не найдено', 'Попробуйте другие цвета или поиск');
+    } else {
+        renderResults(filtered);
     }
 }
 
-.wallpaper-card:hover {
-    transform: translateY(-8px);
-    border-color: rgba(102, 126, 234, 0.3);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-}
-
-.wallpaper-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    display: block;
-}
-
-.wallpaper-card .info {
-    padding: 16px 20px 20px;
-}
-
-.wallpaper-card .info h4 {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #fff;
-    margin-bottom: 4px;
-}
-
-.wallpaper-card .info .path {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.3);
-    font-family: monospace;
-    margin-bottom: 10px;
-}
-
-.wallpaper-card .info .badges {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-}
-
-.wallpaper-card .info .badge {
-    padding: 4px 12px;
-    background: rgba(255, 255, 255, 0.06);
-    border-radius: 50px;
-    font-size: 0.7rem;
-    color: rgba(255, 255, 255, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.04);
-}
-
-.wallpaper-card .info .badge.os {
-    background: rgba(102, 126, 234, 0.15);
-    color: #667eea;
-    border-color: rgba(102, 126, 234, 0.2);
-}
-
-/* Footer */
-footer {
-    text-align: center;
-    margin-top: 50px;
-    padding-top: 30px;
-    border-top: 1px solid rgba(255, 255, 255, 0.04);
-}
-
-footer p {
-    color: rgba(255, 255, 255, 0.2);
-    font-size: 0.85rem;
-}
-
-footer code {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 2px 10px;
-    border-radius: 4px;
-    font-size: 0.8rem;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .logo h1 {
-        font-size: 2rem;
+// Получить название цвета из hex
+function getColorName(hex) {
+    const rgb = hexToRgb(hex);
+    if (!rgb) return null;
+    
+    let bestMatch = null;
+    let bestDistance = Infinity;
+    
+    for (const [name, colors] of Object.entries(colorMap)) {
+        for (const color of colors) {
+            const targetRgb = hexToRgb(color);
+            if (!targetRgb) continue;
+            
+            const distance = getColorDistance(rgb, targetRgb);
+            if (distance < bestDistance) {
+                bestDistance = distance;
+                bestMatch = name;
+            }
+        }
     }
     
-    .os-selector {
-        flex-direction: column;
-    }
-    
-    .color-inputs {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 15px;
-    }
-    
-    .color-field {
-        justify-content: center;
-    }
-    
-    .filters {
-        padding: 20px;
-    }
-    
-    .wallpaper-grid {
-        grid-template-columns: 1fr;
-    }
+    return bestDistance < 160 ? bestMatch : null;
 }
+
+function hexToRgb(hex) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+}
+
+function getColorDistance(c1, c2) {
+    return Math.sqrt(
+        Math.pow(c1.r - c2.r, 2) +
+        Math.pow(c1.g - c2.g, 2) +
+        Math.pow(c1.b - c2.b, 2)
+    );
+}
+
+// Рендер результатов
+function renderResults(files) {
+    const osName = state.os === 'windows' ? 'Windows' : 'Linux';
+    const osPath = state.os;
+    
+    let html = `
+        <div class="results-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
+            <h3 style="color:rgba(255,255,255,0.7);font-weight:400;">
+                Найдено <strong style="color:#fff;">${files.length}</strong> обоев для <strong style="color:#667eea;">${osName}</strong>
+                ${state.search ? `по запросу «${state.search}»` : ''}
+            </h3>
+            <div style="display:flex;align-items:center;gap:8px;font-size:0.85rem;color:rgba(255,255,255,0.3);">
+                <span>👤</span>
+                <span>Автор: <strong style="color:rgba(255,255,255,0.6);">${AUTHOR_NAME}</strong></span>
+            </div>
+        </div>
+        <div class="wallpaper-grid">
+    `;
+    
+    files.forEach((file, index) => {
+        const colors = file.replace('.png', '').split(' ');
+        const color1 = colors[0] || '';
+        const color2 = colors[1] || '';
+        const displayName = file.replace('.png', '');
+        
+        html += `
+            <div class="wallpaper-card" style="animation-delay: ${index * 0.05}s">
+                <img src="wallpapers/${osPath}/${file}" alt="${displayName}" 
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22200%22%3E%3Crect width=%22300%22 height=%22200%22 fill=%22%231a1a2e%22/%3E%3Ctext x=%2250%25%22 y=%2245%25%22 text-anchor=%22middle%22 fill=%22%23667eea%22 font-family=%22sans-serif%22 font-size=%2220%22 font-weight=%22bold%22%3E🖼️%3C/text%3E%3Ctext x=%2250%25%22 y=%2270%25%22 text-anchor=%22middle%22 fill=%22%23666%22 font-family=%22sans-serif%22 font-size=%2212%22%3E${displayName}%3C/text%3E%3C/svg%3E'">
+                <div class="info">
+                    <h4>${displayName}</h4>
+                    <div class="path">📁 wallpapers/${osPath}/${file}</div>
+                    <div class="badges">
+                        <span class="badge os">${osName}</span>
+                        ${color1 ? `<span class="badge">🎨 ${color1}</span>` : ''}
+                        ${color2 ? `<span class="badge">🎨 ${color2}</span>` : ''}
+                        <span class="badge">👤 ${AUTHOR_NAME}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    html += '</div>';
+    resultsDiv.innerHTML = html;
+}
+
+// Показать пустое состояние
+function showEmpty(icon, title, desc) {
+    resultsDiv.innerHTML = `
+        <div class="empty-state">
+            <div class="empty-icon">${icon}</div>
+            <h3>${title}</h3>
+            <p>${desc}</p>
+            <div style="margin-top:15px;font-size:0.8rem;color:rgba(255,255,255,0.2);">
+                👤 Автор: ${AUTHOR_NAME}
+            </div>
+        </div>
+    `;
+}
+
+// Таймаут для автопоиска
+let timeoutId;
+
+// Инициализация
+showEmpty('🖼️', 'Выберите параметры и нажмите "Найти обои"', 'Я покажу все подходящие обои из моей коллекции');
+
+console.log(`🎨 Wallpaper Catalog by ${AUTHOR_NAME} загружен!`);
+console.log(`📁 Всего обоев: Windows — ${wallpaperFiles.windows.length}, Linux — ${wallpaperFiles.linux.length}`);
